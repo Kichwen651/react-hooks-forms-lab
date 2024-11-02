@@ -7,15 +7,15 @@ test("calls the onItemFormSubmit callback prop when the form is submitted", () =
   const onItemFormSubmit = jest.fn();
   render(<ItemForm onItemFormSubmit={onItemFormSubmit} />);
 
-  fireEvent.change(screen.queryByLabelText(/Name/), {
+  fireEvent.change(screen.getByLabelText(/Name:/), {
     target: { value: "Ice Cream" },
   });
 
-  fireEvent.change(screen.queryByLabelText(/Category/), {
+  fireEvent.change(screen.getByLabelText(/Category:/), {
     target: { value: "Dessert" },
   });
 
-  fireEvent.submit(screen.queryByText(/Add to List/));
+  fireEvent.click(screen.getByRole("button", { name: /Add Item/i }));
 
   expect(onItemFormSubmit).toHaveBeenCalledWith(
     expect.objectContaining({
@@ -31,17 +31,17 @@ test("adds a new item to the list when the form is submitted", () => {
 
   const dessertCount = screen.queryAllByText(/Dessert/).length;
 
-  fireEvent.change(screen.queryByLabelText(/Name/), {
+  fireEvent.change(screen.getByLabelText(/Name:/), {
     target: { value: "Ice Cream" },
   });
 
-  fireEvent.change(screen.queryByLabelText(/Category/), {
+  fireEvent.change(screen.getByLabelText(/Category:/), {
     target: { value: "Dessert" },
   });
 
-  fireEvent.submit(screen.queryByText(/Add to List/));
+  // Change this line to click the button
+  fireEvent.click(screen.getByRole("button", { name: /Add Item/i }));
 
-  expect(screen.queryByText(/Ice Cream/)).toBeInTheDocument();
-
+  expect(screen.getByText(/Ice Cream/)).toBeInTheDocument();
   expect(screen.queryAllByText(/Dessert/).length).toBe(dessertCount + 1);
 });
